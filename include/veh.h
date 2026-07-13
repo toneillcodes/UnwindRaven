@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+extern DWORD gSpoofedThreadId;   // <‑‑ ADD THIS
+
 LONG CALLBACK VehCallback(PEXCEPTION_POINTERS ExceptionInfo);
 
 BOOL RegisterVeh(void);

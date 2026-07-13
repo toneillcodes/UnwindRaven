@@ -1,5 +1,5 @@
 #pragma once
-#include "common.h"
+#include <Windows.h>
 
 #ifdef __cplusplus
 extern "C" {

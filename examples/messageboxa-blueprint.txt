@@ -1,0 +1,10 @@
+C:\Windows\System32\win32u.dll|NtUserWaitMessage|0x14|0
+C:\Windows\System32\USER32.dll|IsDialogMessage|0x3BA|0
+C:\Windows\System32\USER32.dll|Ordinal2635|0x267|0
+C:\Windows\System32\USER32.dll|SoftModalMessageBox|0x5B6|0
+C:\Windows\System32\USER32.dll|MessageBoxIndirectA|0x562|0
+C:\Windows\System32\USER32.dll|MessageBoxTimeoutW|0x18F|0
+C:\Windows\System32\USER32.dll|MessageBoxTimeoutA|0x100|0
+C:\Windows\System32\USER32.dll|MessageBoxA|0x45|0
+C:\Windows\System32\KERNEL32.DLL|BaseThreadInitThunk|0x17|0
+C:\Windows\SYSTEM32\ntdll.dll|RtlUserThreadStart|0x2C|0

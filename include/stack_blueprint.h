@@ -26,8 +26,8 @@ HMODULE ModuleFromAddress(
 
 DWORD GetRvaFromName(HMODULE hModule, const CHAR* functionName);
 
-HMODULE GetCachedImageBase(const WCHAR* dllPath);
-void CacheImageBase(const WCHAR* dllPath, HMODULE hModule);
+HMODULE GetCachedImageBase(UR_STACK_CONTEXT* ctx, const WCHAR* dllPath);
+void CacheImageBase(UR_STACK_CONTEXT* ctx, const WCHAR* dllPath, HMODULE hModule);
 
 #ifdef __cplusplus
 }

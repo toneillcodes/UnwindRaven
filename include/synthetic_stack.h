@@ -15,6 +15,7 @@ NTSTATUS CalculateFunctionStackSize(
 NTSTATUS CalculateFunctionStackSizeWrapper(StackFrame* stackFrame);
 
 void BuildDynamicStack(
+    UR_STACK_CONTEXT* ctx,
     const StackProfileEntry* blueprint,
     int blueprintSize,
     StackFrame* outStack,
