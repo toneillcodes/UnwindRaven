@@ -253,48 +253,6 @@ void InitializeFakeThreadState(
     }
 }
 
-/*
-void InitializeFakeThreadState(
-    CONTEXT* context,
-    StackFrame* targetCallStack,
-    int frameCount
-)
-{
-    ULONG64 childSp = 0;
-    BOOL bPreviousFrameSetUWOP_SET_FPREG = FALSE;
-
-    PushToStack(context, 0); // sentinel
-
-    for (int i = frameCount - 1; i >= 0; i--) {
-        StackFrame* sf = &targetCallStack[i];
-
-        if (bPreviousFrameSetUWOP_SET_FPREG && sf->pushRbp) {
-            ULONG diff = sf->countOfCodes - sf->pushRbpIndex;
-            ULONG tmpStackSizeCounter = 0;
-
-            for (ULONG j = 0; j < diff; j++) {
-                PushToStack(context, 0);
-                tmpStackSizeCounter += 8;
-            }
-
-            PushToStack(context, childSp);
-
-            context->Rsp -= (sf->totalStackSize - (tmpStackSizeCounter + 8));
-            *(ULONG64*)(context->Rsp) = (ULONG64)sf->returnAddress;
-
-            bPreviousFrameSetUWOP_SET_FPREG = FALSE;
-        } else {
-            context->Rsp -= sf->totalStackSize;
-            *(ULONG64*)(context->Rsp) = (ULONG64)sf->returnAddress;
-        }
-
-        if (sf->setsFramePointer) {
-            childSp = context->Rsp + 8;
-            bPreviousFrameSetUWOP_SET_FPREG = TRUE;
-        }
-    }
-}*/
-
 void DumpSyntheticStack(const StackFrame* targetCallStack, int frameCount)
 {
     printf("[*] Synthetic stack profile (%d frames):\n", frameCount);

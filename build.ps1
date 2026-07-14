@@ -1,25 +1,18 @@
-# MSYS2 MinGW64 paths
-$MsysRoot = "C:\msys64"
-$Mingw64Bin = "$MsysRoot\mingw64\bin"
-
-# Explicit tool paths
-$CMake = "$Mingw64Bin\cmake.exe"
-$Ninja = "$Mingw64Bin\ninja.exe"
+# Paths
+$CMake = "C:\msys64\mingw64\bin\cmake.exe"
 
 # Verify tools
 & $CMake --version
-& $Ninja --version
 
 # Create build directory
-if (!(Test-Path "build")) {
-    New-Item -ItemType Directory -Path "build" | Out-Null
+if (!(Test-Path "build-msvc")) {
+    New-Item -ItemType Directory -Path "build-msvc" | Out-Null
 }
 
-# Configure
-& $CMake -S . -B build `
-    -G "Ninja" `
-    -DCMAKE_MAKE_PROGRAM="$Ninja" `
-    -DCMAKE_TOOLCHAIN_FILE="cmake/toolchain-mingw64.cmake"
+# Configure MSVC build
+& $CMake -S . -B build-msvc -G "Visual Studio 17 2022" -A x64
 
-# Build
-& $CMake --build build --config Release
+# Build all targets (Release)
+& $CMake --build build-msvc --config Release
+
+Write-Host "[+] Build complete. Binaries are in ./bin/"

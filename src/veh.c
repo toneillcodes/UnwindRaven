@@ -6,7 +6,7 @@ DWORD gSpoofedThreadId = 0;
 
 LONG CALLBACK VehCallback(PEXCEPTION_POINTERS ExceptionInfo)
 {
-    // Only handle AVs from the spoofed thread (PoC behavior)
+    // Only handle AVs from the spoofed thread
     if (GetCurrentThreadId() != gSpoofedThreadId)
         return EXCEPTION_CONTINUE_SEARCH;
 

@@ -19,24 +19,10 @@ BOOL BuildSyntheticStackFromBlueprint(
     int* outFrameCount
 );
 
-/*
-BOOL MapPayloadImage(
-    const CHAR* dllPath,
-    MappedImageInfo* outInfo
-);*/
-
 BOOL MapPayloadImage(
     const CHAR* dllPath,
     UR_LOADER_CONTEXT* lctx
 );
-
-/*
-old version invoking an image
-HANDLE StartSpoofedThread(
-    const StackFrame* frames,
-    int frameCount,
-    const MappedImageInfo* imgInfo
-);*/
 
 /*
 HANDLE StartSpoofedThread(
@@ -46,6 +32,7 @@ HANDLE StartSpoofedThread(
     void* userParam
 );*/
 
+// adding support for args
 HANDLE StartSpoofedThread(
     const StackFrame* frames,
     int frameCount,

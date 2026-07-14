@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-extern DWORD gSpoofedThreadId;   // <‑‑ ADD THIS
+extern DWORD gSpoofedThreadId;          //  tracking the thread for targeted VehCallback processing. todo: move to a context
 
 LONG CALLBACK VehCallback(PEXCEPTION_POINTERS ExceptionInfo);
 
