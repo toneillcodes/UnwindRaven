@@ -1,11 +1,10 @@
 #pragma once
 #include "common.h"
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-//BOOL EnableDebugPrivilege(void);
 
 BOOL IsProcessWow64(HANDLE hProcess, BOOL* pIsWow64);
 
@@ -22,12 +21,23 @@ HMODULE ModuleFromAddress(
     WCHAR* outPath
 );
 
-//BOOL NormalizeModulePath(WCHAR* out, const WCHAR* in);
+BOOL GetExportRvaRemote(
+    HANDLE hProcess, 
+    HMODULE hMod, 
+    const char* name, 
+    DWORD* outRva
+);
 
-//DWORD GetRvaFromName(HMODULE hModule, const CHAR* functionName);
+BOOL FindFirstThreadInPid(
+    DWORD pid, 
+    DWORD* outTid
+);
 
-//HMODULE GetCachedImageBase(UR_STACK_CONTEXT* ctx, const WCHAR* dllPath);
-//void CacheImageBase(UR_STACK_CONTEXT* ctx, const WCHAR* dllPath, HMODULE hModule);
+int HarvestBlueprintFromThread(
+    DWORD pid, 
+    DWORD tid, 
+    FILE* fp
+);
 
 #ifdef __cplusplus
 }

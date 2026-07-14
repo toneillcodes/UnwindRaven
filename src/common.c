@@ -3,7 +3,6 @@
 #include <wchar.h>
 #include <string.h>
 
-
 BOOL EnableDebugPrivilege(void)
 {
     HANDLE hToken;

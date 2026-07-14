@@ -24,7 +24,7 @@ BOOL MapPayloadImage(
     UR_LOADER_CONTEXT* lctx
 );
 
-/*
+/* old definition
 HANDLE StartSpoofedThread(
     const StackFrame* frames,
     int frameCount,
